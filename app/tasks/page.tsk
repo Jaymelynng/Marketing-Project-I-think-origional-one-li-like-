@@ -1,0 +1,238 @@
+"use client";
+
+import React, { useState } from "react";
+import {
+  Calendar,
+  CheckSquare,
+  Camera,
+  Mail,
+  Sparkles,
+  Star,
+  Plus,
+  Clock
+} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+export default function Tasks() {
+  // Task categories for filtering
+  const categories = ["All", "Media", "Social", "Email", "Website"];
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const tasks = [
+    {
+      id: 1,
+      title: "Upload Thanksgiving Photos",
+      time: "9:00 AM",
+      priority: "High",
+      category: "Media",
+      status: "pending",
+      checklist: [
+        { id: 1, task: "Upload photos", completed: false },
+        { id: 2, task: "Select top 3", completed: false },
+        { id: 3, task: "Add overlays", completed: false },
+      ],
+    },
+    {
+      id: 2,
+      title: "Review Social Media Posts",
+      time: "11:00 AM",
+      priority: "Medium",
+      category: "Social",
+      status: "pending",
+      checklist: [
+        { id: 1, task: "Review captions", completed: true },
+        { id: 2, task: "Check hashtags", completed: false },
+      ],
+    },
+  ];
+
+  const router = useRouter();
+
+  return (
+    <div className="flex h-screen bg-white">
+      {/* Left Sidebar */}
+      <div className="w-72 shadow-lg p-4" style={{ background: "#cec4c1" }}>
+        <h2
+          className="text-xl font-serif mb-6 flex items-center"
+          style={{ color: "#737373" }}
+        >
+          <Sparkles className="w-6 h-6 mr-2" style={{ color: "#b48f8f" }} />
+          Jayme's Marketing Project ✨
+        </h2>
+        <nav className="space-y-3">
+          <Link href="/" passHref>
+            <div
+              className="w-full flex items-center px-5 py-3 text-left rounded-lg hover:shadow-md transition-all hover:bg-gray-100 hover:text-[#b48f8f] cursor-pointer"
+              style={{ color: "#737373" }}
+            >
+              <Star className="w-6 h-6 mr-4" />
+              <span>Dashboard</span>
+            </div>
+          </Link>
+          <Link href="/calendar-details" passHref>
+            <div
+              className="w-full flex items-center px-5 py-3 text-left rounded-lg hover:shadow-md transition-all hover:bg-gray-100 hover:text-[#b48f8f] cursor-pointer"
+              style={{ color: "#737373" }}
+            >
+              <Calendar className="w-6 h-6 mr-4" />
+              <span>Calendar Details</span>
+            </div>
+          </Link>
+          <Link href="/tasks" passHref>
+            <div
+              className="w-full flex items-center px-5 py-3 text-left rounded-lg bg-gray-100"
+              style={{ color: "#b48f8f" }}
+            >
+              <CheckSquare className="w-6 h-6 mr-4" />
+              <span>Tasks</span>
+            </div>
+          </Link>
+          <Link href="/media" passHref>
+            <div
+              className="w-full flex items-center px-5 py-3 text-left rounded-lg hover:shadow-md transition-all hover:bg-gray-100 hover:text-[#b48f8f] cursor-pointer"
+              style={{ color: "#737373" }}
+            >
+              <Camera className="w-6 h-6 mr-4" />
+              <span>Media</span>
+            </div>
+          </Link>
+          <Link href="/emails" passHref>
+            <div
+              className="w-full flex items-center px-5 py-3 text-left rounded-lg hover:shadow-md transition-all hover:bg-gray-100 hover:text-[#b48f8f] cursor-pointer"
+              style={{ color: "#737373" }}
+            >
+              <Mail className="w-6 h-6 mr-4" />
+              <span>Emails</span>
+            </div>
+          </Link>
+          <Link href="/content-creation" passHref>
+            <div
+              className="w-full flex items-center px-5 py-3 text-left rounded-lg hover:shadow-md transition-all hover:bg-gray-100 hover:text-[#b48f8f] cursor-pointer"
+              style={{ color: "#737373" }}
+            >
+              <Plus className="w-6 h-6 mr-4" />
+              <span>Create Content</span>
+            </div>
+          </Link>
+        </nav>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 p-8">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1
+              className="text-2xl font-serif flex items-center gap-3"
+              style={{ color: "#8b8585" }}
+            >
+              <CheckSquare className="w-8 h-8" />
+              Task Manager
+            </h1>
+            <p className="text-sm mt-1" style={{ color: "#8b8585" }}>
+              Manage and track your marketing tasks
+            </p>
+          </div>
+          <div>
+            <button
+              className="px-6 py-2 rounded-lg flex items-center gap-2"
+              style={{ background: "#b48f8f", color: "#ffffff" }}
+              onClick={() => router.push("/content-creation")}
+            >
+              <Plus className="w-4 h-4" />
+              Create New Content
+            </button>
+            <button
+              className="ml-4 px-6 py-2 rounded-lg flex items-center gap-2"
+              style={{ background: "#b48f8f", color: "#ffffff" }}
+              onClick={() => router.push("/task-creation")}
+            >
+              <Plus className="w-4 h-4" />
+              Add New Task
+            </button>
+          </div>
+        </div>
+
+        {/* Category Filter */}
+        <div className="flex gap-4 mb-6">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-lg transition-all ${
+                selectedCategory === category
+                  ? "bg-[#d6c1bf] text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Tasks List */}
+        <div className="space-y-4">
+          {tasks.map((task) => (
+            <div
+              key={task.id}
+              className="p-6 rounded-lg border hover:shadow-md transition-all"
+              style={{ borderColor: "#cec4c1", background: "#ffffff" }}
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3
+                    className="text-lg font-medium"
+                    style={{ color: "#8b8585" }}
+                  >
+                    {task.title}
+                  </h3>
+                  <div className="flex items-center gap-4 mt-2">
+                    <span
+                      className="text-sm flex items-center gap-1"
+                      style={{ color: "#737373" }}
+                    >
+                      <Clock className="w-4 h-4" />
+                      {task.time}
+                    </span>
+                    <span
+                      className="text-sm px-2 py-1 rounded-full"
+                      style={{
+                        background:
+                          task.priority === "High" ? "#fecaca" : "#d6c1bf",
+                        color: task.priority === "High" ? "#991b1b" : "#737373",
+                      }}
+                    >
+                      {task.priority}
+                    </span>
+                    <span
+                      className="text-sm px-2 py-1 rounded-full bg-gray-100"
+                      style={{ color: "#737373" }}
+                    >
+                      {task.category}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Checklist */}
+              <div className="space-y-2">
+                {task.checklist.map((item) => (
+                  <div key={item.id} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={item.completed}
+                      className="rounded border-gray-300"
+                    />
+                    <span style={{ color: "#737373" }}>{item.task}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
